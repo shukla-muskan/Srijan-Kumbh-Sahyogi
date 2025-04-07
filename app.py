@@ -9,6 +9,10 @@ with open("fever_medicine_predictor.pkl", "rb") as file:
 with open("medicine_name_predictor.pkl", "rb") as file:
     model = pickle.load(file)    
 
+@app.route('/')
+def home():
+    return "Flask ML Model is Running!"
+
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.json  # Assuming data is sent as JSON
