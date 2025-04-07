@@ -17,15 +17,20 @@ def home():
     return "ML model is running"
 
 # Route 1: Predict general medicine
-@app.route('/predict-medicine', methods=['POST'])
-def predict_medicine():
-    data = request.get_json()
-    if 'features' not in data:
-        return jsonify({'error': 'Missing features'}), 400
-    
-    features = data['features']
-    prediction = medicine_model.predict([features])
-    return jsonify({'prediction': prediction.tolist()})
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = request.json
+    input_season = data.get("Season")
+
+    # Step 1: Validate season
+    allowed_seasons = ["Rainy", "Summer", "Winter"]
+    if input_season not in allowed_seasons:
+        return jsonify({"error": f"Invalid season. Allowed: {allowed_seasons}"}), 400
+
+    # Step 2: Predict
+    prediction = model.predict([{"Season": input_season}])
+    return jsonify({"predicted_medicine": prediction[0]})
+
 
 # Route 2: Predict medicine for fever
 @app.route('/predict-fever', methods=['POST'])
