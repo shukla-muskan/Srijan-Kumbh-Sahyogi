@@ -1,15 +1,9 @@
-pandas (pd)
-numpy (np)
-matplotlib.pyplot (plt)
-seaborn (sns)
-scikit-learn (sklearn) with these components:
+pandas 
+numpy 
+matplotlib
+seaborn
+scikit-learn 
 
-sklearn.model_selection (train_test_split)
-sklearn.ensemble (RandomForestClassifier)
-sklearn.metrics (classification_report, accuracy_score)
-sklearn.preprocessing (OneHotEncoder)
-sklearn.compose (ColumnTransformer)
-sklearn.pipeline (Pipeline)
 
 pickle
 Flask
