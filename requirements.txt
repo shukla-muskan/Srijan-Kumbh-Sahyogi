@@ -3,7 +3,4 @@ numpy
 matplotlib
 seaborn
 scikit-learn 
-
-
-pickle
 Flask
