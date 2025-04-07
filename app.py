@@ -23,7 +23,7 @@ def predict():
     input_season = data.get("Season")
 
     # Step 1: Validate season
-    allowed_seasons = ["Rainy", "Summer", "Winter"]
+    allowed_seasons = ['Fall' 'Spring' 'Summer' 'Winter']
     if input_season not in allowed_seasons:
         return jsonify({"error": f"Invalid season. Allowed: {allowed_seasons}"}), 400
 
