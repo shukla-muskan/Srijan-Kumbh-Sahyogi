@@ -3,23 +3,40 @@ import pickle
 
 app = Flask(__name__)
 
-# Load the trained model
-with open("fever_medicine_predictor.pkl", "rb") as file:
-    model = pickle.load(file)
-with open("medicine_name_predictor.pkl", "rb") as file:
-    model = pickle.load(file)    
+# Load both models
+with open('medicine_name_predictor.pkl', 'rb') as f:
+    medicine_model = pickle.load(f)
 
+with open('fever_medicine_predictor.pkl', 'rb') as f:
+    fever_model = pickle.load(f)
+
+# Root route
 @app.route('/')
 def home():
-    return "Flask ML Model is Running!"
+    return "ML model is running"
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.json  # Assuming data is sent as JSON
-    input_features = data.get("features")  # Example: [5.1, 3.5, 1.4, 0.2]
+# Route 1: Predict general medicine
+@app.route('/predict-medicine', methods=['POST'])
+def predict_medicine():
+    data = request.get_json()
+    if 'features' not in data:
+        return jsonify({'error': 'Missing features'}), 400
     
-    prediction = model.predict([input_features])
-    return jsonify({"prediction": prediction[0]})
+    features = data['features']
+    prediction = medicine_model.predict([features])
+    return jsonify({'prediction': prediction.tolist()})
 
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+# Route 2: Predict medicine for fever
+@app.route('/predict-fever', methods=['POST'])
+def predict_fever():
+    data = request.get_json()
+    if 'features' not in data:
+        return jsonify({'error': 'Missing features'}), 400
+
+    features = data['features']
+    prediction = fever_model.predict([features])
+    return jsonify({'prediction': prediction.tolist()})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
