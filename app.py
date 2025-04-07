@@ -4,8 +4,10 @@ import pickle
 app = Flask(__name__)
 
 # Load the trained model
-with open("model.pkl", "rb") as file:
+with open("fever_medicine_predictor.pkl", "rb") as file:
     model = pickle.load(file)
+with open("medicine_name_predictor.pkl", "rb") as file:
+    model = pickle.load(file)    
 
 @app.route("/predict", methods=["POST"])
 def predict():
