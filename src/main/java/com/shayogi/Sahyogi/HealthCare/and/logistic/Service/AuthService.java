@@ -1,0 +1,30 @@
+package com.shayogi.Sahyogi.HealthCare.and.logistic.Service;
+
+import com.shayogi.Sahyogi.HealthCare.and.logistic.Entity.Role;
+import com.shayogi.Sahyogi.HealthCare.and.logistic.Entity.User;
+import com.shayogi.Sahyogi.HealthCare.and.logistic.Repository.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public User login(String aadharNo, String password) {
+        return userRepository.findByAadharNoAndPassword(aadharNo, password)
+                .orElseThrow(() -> new RuntimeException("Invalid credentials or role"));
+    }
+
+    public User signup(String name, String aadharNo, String mobile, Role role, String password) {
+        if (userRepository.findByNameAndAadharNoAndMobileNumberAndRoleAndPassword(name, aadharNo, mobile, role,password).isPresent()) {
+            throw new RuntimeException("User already exists with same credentials");
+        }
+
+        User user = new User(name, aadharNo, mobile,password, role);
+        return userRepository.save(user);
+    }
+
+
+}

@@ -17,9 +17,9 @@ public class Patient {
     @Column(nullable = false)
     private String name;
 
-    @Pattern(regexp = "\\d{12}", message = "Aadhar must be exactly 12 digits")
-    @Column(nullable = false, unique = true, length = 12)
-    private String aadhar;
+   // @Pattern(regexp = "\\d{12}", message = "Aadhar must be exactly 12 digits")
+  //  @Column(nullable = false, unique = true, length = 12)
+  //  private String aadhar;
 
     private int age;
 
@@ -32,7 +32,7 @@ public class Patient {
 
     private String address;
 
-    private String prescriptionImagePath;
+   // private String prescriptionImagePath;
 
     private boolean verified = false;
 

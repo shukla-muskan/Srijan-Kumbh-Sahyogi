@@ -25,33 +25,10 @@ public class PatientController {
     private final String uploadDir = "uploads/";
 
     @PostMapping
-    public ResponseEntity<?> registerPatient(
-            @RequestParam String name,
-            @RequestParam String aadhar,
-            @RequestParam int age,
-            @RequestParam String gender,
-            @RequestParam String disease,
-            @RequestParam String contact,
-            @RequestParam String address,
-            @RequestParam("prescriptionImage") MultipartFile prescriptionImage
-    ) throws IOException {
-        // Save prescription image
-        String fileName = UUID.randomUUID() + "_" + prescriptionImage.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir + fileName);
-        Files.createDirectories(filePath.getParent());
-        Files.copy(prescriptionImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        // Create patient entity
-        Patient patient = new Patient();
-        patient.setName(name);
-        patient.setAadhar(aadhar);
-        patient.setAge(age);
-        patient.setGender(gender);
-        patient.setDisease(disease);
-        patient.setContact(contact);
-        patient.setAddress(address);
+    public ResponseEntity<?> registerPatient(@RequestBody Patient patient) throws IOException {
+        System.out.println(patient.getName());
+        System.out.println(patient.getDisease());
         patient.setDateAdded(LocalDate.now());
-        patient.setPrescriptionImagePath(filePath.toString());
         patient.setVerified(false);
 
         patientRepository.save(patient);
@@ -91,7 +68,7 @@ public class PatientController {
         Patient patient = optionalPatient.get();
 
         if (name != null && name != patient.getName()) patient.setName(name);
-        if (aadhar != null && aadhar!= patient.getAadhar()) patient.setAadhar(aadhar);
+       // if (aadhar != null && aadhar!= patient.getAadhar()) patient.setAadhar(aadhar);
         if (age != null) patient.setAge(age);
         if (gender != null) patient.setGender(gender);
         if (disease != null) patient.setDisease(disease);
@@ -99,13 +76,13 @@ public class PatientController {
         if (address != null) patient.setAddress(address);
 
         // Optional: Update prescription image
-        if (prescriptionImage != null && !prescriptionImage.isEmpty()) {
-            String fileName = UUID.randomUUID() + "_" + prescriptionImage.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir + fileName);
-            Files.createDirectories(filePath.getParent());
-            Files.copy(prescriptionImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            patient.setPrescriptionImagePath(filePath.toString());
-        }
+//        if (prescriptionImage != null && !prescriptionImage.isEmpty()) {
+//            String fileName = UUID.randomUUID() + "_" + prescriptionImage.getOriginalFilename();
+//          //  Path filePath = Paths.get(uploadDir + fileName);
+//         //   Files.createDirectories(filePath.getParent());
+//           // Files.copy(prescriptionImage.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//          //  patient.setPrescriptionImagePath(filePath.toString());
+//        }
 
         patientRepository.save(patient);
         return ResponseEntity.ok("Patient updated successfully");
