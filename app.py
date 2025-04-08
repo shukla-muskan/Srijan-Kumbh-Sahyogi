@@ -28,7 +28,7 @@ def predict():
         return jsonify({"error": f"Invalid season. Allowed: {allowed_seasons}"}), 400
 
     # Step 2: Predict
-    prediction = model.predict([{"Season": input_season}])
+    prediction = medicine_model.predict([{"Season": input_season}])
     return jsonify({"predicted_medicine": prediction[0]})
 
 
