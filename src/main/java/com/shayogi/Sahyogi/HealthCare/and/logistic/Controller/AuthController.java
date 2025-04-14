@@ -1,5 +1,6 @@
 package com.shayogi.Sahyogi.HealthCare.and.logistic.Controller;
 
+
 import com.shayogi.Sahyogi.HealthCare.and.logistic.DTO.LoginRequest;
 import com.shayogi.Sahyogi.HealthCare.and.logistic.DTO.SignupRequest;
 import com.shayogi.Sahyogi.HealthCare.and.logistic.Entity.User;
@@ -8,14 +9,12 @@ import com.shayogi.Sahyogi.HealthCare.and.logistic.Service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
@@ -24,14 +23,14 @@ public class AuthController {
     @Autowired
     private UserRepository userRepository;
 
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            User user = authService.login(
-                    request.getAadharNo(),
-                    request.getPassword()
+            User user = authService.login(request.getAadharNo(), request.getPassword()
 
             );
+
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
@@ -45,11 +44,12 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
         }
 
+        System.out.println("MOB " + request.getMobileNumber());
+
         User user = new User();
         user.setName(request.getName());
         user.setAadharNo(request.getAadharNo());
-        user.setMobileNumber(request.getMobileNo());
-        user.setRole(request.getRole());
+        user.setMobileNumber(request.getMobileNumber());
         user.setPassword(request.getPassword());
 
         userRepository.save(user);

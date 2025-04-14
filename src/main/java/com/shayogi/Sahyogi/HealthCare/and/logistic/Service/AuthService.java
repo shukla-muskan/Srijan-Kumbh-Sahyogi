@@ -1,6 +1,5 @@
 package com.shayogi.Sahyogi.HealthCare.and.logistic.Service;
 
-import com.shayogi.Sahyogi.HealthCare.and.logistic.Entity.Role;
 import com.shayogi.Sahyogi.HealthCare.and.logistic.Entity.User;
 import com.shayogi.Sahyogi.HealthCare.and.logistic.Repository.UserRepository;
 
@@ -17,12 +16,12 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Invalid credentials or role"));
     }
 
-    public User signup(String name, String aadharNo, String mobile, Role role, String password) {
-        if (userRepository.findByNameAndAadharNoAndMobileNumberAndRoleAndPassword(name, aadharNo, mobile, role,password).isPresent()) {
+    public User signup(String name, String aadharNo, String mobile,  String password) {
+        if (userRepository.findByNameAndAadharNoAndMobileNumberAndPassword(name, aadharNo, mobile,password).isPresent()) {
             throw new RuntimeException("User already exists with same credentials");
         }
 
-        User user = new User(name, aadharNo, mobile,password, role);
+        User user = new User(name, aadharNo, mobile,password);
         return userRepository.save(user);
     }
 
